@@ -84,10 +84,8 @@ function player(){
 						this.invincibleTime = 0;
 						this.invincible = false;
 					}
-				}						
-				else
-					ctx.fillStyle = 'rgba(142,214,255,255)';
-				ctx.fill();
+				}
+				
                 if( this.Shields > 0 )
                     this.drawShields();
 			}
