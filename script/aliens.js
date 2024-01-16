@@ -28,7 +28,7 @@ function swooper(x, y, health, weight){
 
 	var drawX = this.loc.x + 25;
 	var drawY = this.loc.y;
-	this.color = WeightChart(this.Health);
+	this.color = WeightChart(this.health);
 
 	ctx.beginPath();
 	ctx.moveTo(drawX - 25, drawY);
