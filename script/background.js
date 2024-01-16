@@ -1,36 +1,52 @@
-var initCircles = function(){
-	for(var i = 0; i < howManyCircles; i++)
-		circles.push([Math.random() * width, Math.random() * height,
-		Math.random() * 100, Math.random() / 2, Math.random() * 10]);
-	  //add information about circles into  
-	  //the 'circles' Array. It is x & y positions,   
-	  //radius from 0-100 and transparency   
-	  //from 0-0.5 (0 is invisible, 1 no transparency)
+background = function(numberOfCircles, height, width){
+	this.height = height;
+	this.width = width;
+	this.howManyCircles = numberOfCircles;
+	this.circles = [];
+		
+	this.initialize = function(){
+		for(let i = 0; i < this.howManyCircles; i++)
+			this.circles.push(
+			new bubble(Math.random() * this.width, Math.random() * this.height, Math.random() * 100, this.getTransparency(), Math.random() * 10));
+	}
+
+	this.draw = function(ctx){
+		for (let i = 0; i < this.howManyCircles; i++){
+			this.circles[i].draw(ctx);
+		}
+	}
+
+	this.move = function(deltaY){
+		for (let i = 0; i < this.howManyCircles; i++){
+			if (this.circles[i].y + this.circles[i].radius < 0){
+				this.circles[i].x = Math.random() * this.width;
+				this.circles[i].radius = Math.random() * 100;
+				this.circles[i].y = this.height + this.circles[i].radius;
+				this.circles[i].transparency = this.getTransparency();
+			}
+			else{
+				this.circles[i].y -= (deltaY + this.circles[i].speed);
+			}
+		}
+	}
+
+	this.getTransparency = function(){
+		return Math.random() / 4;
+	}
+};
+
+bubble = function(x, y, radius, transparency, speed){
+	this.x = x;
+	this.y = y;
+	this.radius = radius;
+	this.transparency = transparency;
+	this.speed = speed;
+
+	this.draw = function(ctx){
+		ctx.fillStyle = 'rgba(255, 255, 0, ' + this.transparency + ')';
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+		ctx.closePath();
+		ctx.fill();
+	}
 }
-
-var DrawCircles = function(){
-  for (var i = 0; i < howManyCircles; i++){
-    ctx.fillStyle = 'rgba(255, 255, 255, ' + circles[i][3] + ')';
-	ctx.beginPath();
-	ctx.arc(circles[i][0], circles[i][1], circles[i][2], 0, Math.PI * 2, true);
-	// arc(x, y, radius, startAngle, endAngle, anticlockwise)
-	// circle always has PI*2 end angle
-	
-	ctx.closePath();
-	ctx.fill();
-	}
-};
-
-var MoveCircles = function(deltaY){
-  for (var i = 0; i < howManyCircles; i++){
-    if (circles[i][1] - circles[i][2] < 0){
-	  circles[i][0] = Math.random() * width;
-	  circles[i][2] = Math.random() * 100;
-	  circles[i][1] = height + circles[i][2];
-	  circles[i][3] = Math.random() / 2;
-	}
-	else{
-	  circles[i][1] -= (deltaY + circles[i][4]);
-	}
-  }
-};

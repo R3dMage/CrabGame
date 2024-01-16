@@ -1,18 +1,19 @@
 // Vital Game variables
 var width = 500,
- height = 720,
- gLoop,
- gameState = 'PreRun',
- Score = 0;
- Lives = 5;
- Level = 1;
- Kills = 0;
- 
+height = 720,
+gLoop,
+gameState = 'PreRun',
+Score = 0;
+Lives = 5;
+Level = 1;
+Kills = 0;
+
+var background = new background(5, height, width);
 var Enemies = [];
 var Missiles = [];
 var Explosions = [];
 var PowerUps = [];
-var howManyCircles = 4, circles = [];
+var howManyCircles = 5, circles = [];
 var xplode = new boom(50, 50);
 
 // Get the context from off the page!
@@ -198,8 +199,8 @@ function PlayGame(){
     }
    
 // Handle all the drawing on the screen
-    MoveCircles(Level); 
-    DrawCircles();
+    background.move(1);
+    background.draw(ctx);
     Missiles.forEach(HandleMissiles);
     Enemies.forEach(HandleEnemies);
     Explosions.forEach(HandleKabooms);
@@ -226,8 +227,8 @@ function PreGame(){
   ctx.font = '10px Arial';
   ctx.fillText('Press SPACE to play',250, 500);
   
-  MoveCircles(1); 
-  DrawCircles();
+  background.move(1);
+  background.draw(ctx);
 
   xplode.draw();
 }
@@ -244,8 +245,8 @@ function GameOver(){
   ctx.font = '10px Arial';
   ctx.fillText('Press SPACE to play',250, 500);
   
-  MoveCircles(1); 
-  DrawCircles();
+  background.move1();
+  background.draw(ctx);
 }
 
 function DisplayHighScores(){
@@ -279,5 +280,5 @@ var GameLoop = function(){
   gLoop = setTimeout(GameLoop, 1000 / 50);
 }
 DisplayHighScores();
-initCircles();
+background.initialize();
 GameLoop();
