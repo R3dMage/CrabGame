@@ -1,7 +1,6 @@
 function game(){
 	this.score = 0;
 	this.lives = 5;
-	this.level = 1;
 	this.kills = 0;
 	this.frameNumber = 0;
 	this.gameOverDelay = 0;
@@ -16,7 +15,7 @@ function game(){
 	this.gameState = 'PreRun';
 	this.width = 500;
 	this.height = 750;
-	// this.levelTracker = new this.levelTracker();
+	this.levelTracker = new levelTracker();
 	this.background = new background(5, this.height, this.width);
 	this.background.initialize();
 	this.gameCanvas = document.getElementById('c');
@@ -44,10 +43,10 @@ function game(){
 	this.startGame = function(){
 		this.enemies.splice(0, this.enemies.length);
 		this.missiles.splice(0, this.enemies.length);
+		this.levelTracker = new levelTracker();
 		this.kills = 0;
 		this.score = 0;
 		this.lives = 5;
-		this.level = 1;
 		this.player = new player();
 		this.gameState = 'Run';
 	}
@@ -92,9 +91,17 @@ function game(){
 		ctx.textAlign = 'center';
 		ctx.fillText("Lives: " + this.lives, 250, 15);
 		ctx.textAlign = 'left';
-		ctx.fillText('Level: ' + this.level, 0, 15);
+		ctx.fillText('Level: ' + this.levelTracker.levelNumber, 0, 15);
+
+		if(this.levelTracker.showLevelUp()){
+			ctx.fillStyle = "Yellow";
+			ctx.font = "40px Arial";
+			ctx.textAlign = 'center';
+			ctx.fillText("Level Up!", 500/2, 200);
+		}
 
 		// Draw player ship status on right
+		ctx.font = "15px Arial";
 		ctx.textAlign = 'left';
 		ctx.fillStyle = 'Black';
 		ctx.fillText( 'Type:' + this.player.getMissileType(), 505, 100 );
@@ -114,19 +121,11 @@ function game(){
 	}
 	
 	this.playGame = function(){
-			this.clear(this.ctx);
-			X = Math.random() * 1000;
-			if(this.enemies.length < 5 && X > 990 ){
-				this.enemies.push(new swooper((Math.random() * 400 + 100), Math.random() * 50, this.level, this.level));
-			}
-
+			this.levelTracker.update(this.frameNumber, this.enemies)
 			this.moveObjects();
 			this.update();
 			this.drawObjects();
 
-	 // Handle Level Ups
-			if( this.kills > this.level * 10 )
-			this.level += 1;
 	 // Handle dead player
 			if( this.lives <= 0 && !this.player.Exploding ){
 				this.gameState = 'GameOver';
@@ -178,7 +177,7 @@ function game(){
 					// The enemy player hit has died. Get Points!
 						this.score += this.enemies[j].weight * 100;
 						this.explosions.push(new kaboom(this.enemies[j].loc.x + this.enemies[j].loc.width / 2, this.enemies[j].loc.y, 15));
-						if (this.level > 1 && Math.random() > 0.9){
+						if (this.levelTracker.levelNumber > 1 && Math.random() > 0.9){
 							this.powerups.push(new powerup(this.enemies[j].loc.x, this.enemies[j].loc.y));
 						}
 						this.kills += 1;
@@ -335,6 +334,7 @@ function game(){
 	}
 
 	this.gameLoop = function(){
+		this.frameNumber += 1;
 		switch (this.gameState){
 		case "PreRun":
 			this.preGame();
