@@ -320,7 +320,7 @@ function game(){
 	this.gameOver = function(){
 		// Find out if we need to record users initials for highscore list
 		// If so we need to run that function
-		this.clear(ctx);
+		this.clear(this.ctx);
 		this.ctx.fillStyle = "White";
 		this.ctx.font = "40px Arial";
 		this.ctx.textAlign = 'center';
