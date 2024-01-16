@@ -32,12 +32,6 @@ function game(){
 		ctx.rect(0, 0, this.width, this.height);
 		ctx.closePath();
 		ctx.fill();
-
-		ctx.fillStyle = '#EEEEEE';
-		ctx.beginPath();
-		ctx.rect(this.width, 0, this.width + 100, this.height);
-		ctx.closePath();
-		ctx.fill();
 	}
 
 	this.playerShoot = function(){
@@ -83,34 +77,40 @@ function game(){
 			this.PowerUps.splice(idx,1);
 	}
 	
-	this.drawStatus = function(){
-	// Draw the status on the top of the screen
-			this.ctx.font = "15px Arial";
-			this.ctx.textAlign = 'right';
-			this.ctx.fillStyle = "White";
-			this.ctx.fillText("Score: " + pad(this.score),490,15);
-			this.ctx.textAlign = 'center';
-			this.ctx.fillText("Lives: " + this.lives, 250, 15);
-			this.ctx.textAlign = 'left';
-			this.ctx.fillText('Level: ' + this.level, 0, 15);
-			
-	// Draw player ship status on right
-			this.ctx.textAlign = 'left';
-			this.ctx.fillStyle = 'Black';
-			this.ctx.fillText( 'Type:' + this.player.getMissileType(), 505, 100 );
-			this.ctx.fillText( 'Gun:', 505, 120 );
-			this.ctx.fillText( 'Shield:', 505, 140 );
-			
-			if( this.player.Shields == 0 )
-				this.ctx.fillText( 'NONE', 550, 140 );
-			else
-			{
-				this.ctx.fillStyle = WeightChart(this.player.Shields);
-				this.ctx.fillRect( 550, 130, 40, 10 );
-			}
-			
-			this.ctx.fillStyle = WeightChart(this.player.WeaponWeight);
-			this.ctx.fillRect( 550, 110, 40, 10 );
+	this.drawStatus = function(ctx){
+		ctx.fillStyle = '#EEEEEE';
+		ctx.fillRect(this.width, 0, this.width + 100, this.height);
+
+		if (this.gameState != "Run")
+			return;
+
+		// Draw the status on the top of the screen
+		ctx.font = "15px Arial";
+		ctx.textAlign = 'right';
+		ctx.fillStyle = "White";
+		ctx.fillText("Score: " + pad(this.score),490,15);
+		ctx.textAlign = 'center';
+		ctx.fillText("Lives: " + this.lives, 250, 15);
+		ctx.textAlign = 'left';
+		ctx.fillText('Level: ' + this.level, 0, 15);
+
+		// Draw player ship status on right
+		ctx.textAlign = 'left';
+		ctx.fillStyle = 'Black';
+		ctx.fillText( 'Type:' + this.player.getMissileType(), 505, 100 );
+		ctx.fillText( 'Gun:', 505, 120 );
+		ctx.fillText( 'Shield:', 505, 140 );
+		
+		if( this.player.Shields == 0 )
+			ctx.fillText( 'NONE', 550, 140 );
+		else
+		{
+			ctx.fillStyle = WeightChart(this.player.Shields);
+			ctx.fillRect( 550, 130, 40, 10 );
+		}
+
+		ctx.fillStyle = WeightChart(this.player.WeaponWeight);
+		ctx.fillRect( 550, 110, 40, 10 );
 	}
 	
 	this.playGame = function(){
@@ -123,9 +123,7 @@ function game(){
 			this.moveObjects();
 			this.update();
 			this.drawObjects();
-			this.player.draw();
 
-			this.drawStatus();
 	 // Handle Level Ups
 			if( this.kills > this.level * 10 )
 			this.level += 1;
@@ -299,6 +297,7 @@ function game(){
 		}
 
 		this.player.draw(this.ctx);
+		this.drawStatus(this.ctx);
 	}
 
 	this.preGame = function(){
@@ -313,6 +312,7 @@ function game(){
 
 		this.background.move(1);
 		this.background.draw(this.ctx);
+		this.drawStatus(this.ctx);
 
 		// xplode.draw();
 	}
@@ -331,6 +331,7 @@ function game(){
 		
 		this.background.move(1);
 		this.background.draw(this.ctx);
+		this.drawStatus(this.ctx);
 	}
 
 	this.gameLoop = function(){
