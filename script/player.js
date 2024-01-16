@@ -15,11 +15,11 @@ function player(){
 
 // Player Damaged / Killed
 	this.Splosion = new boom(this.x, this.y);
-	this.InvincibleTime = 0;
-	this.Invincible = false;
+	this.invincibleTime = 0;
+	this.invincible = false;
 	this.exploding = false;
-	this.ExplodeDistance = 0;
-	this.loc = new position(212.5, 634, 16, 20);
+	this.explodeDistance = 0;
+	this.loc = new position(212.5, 634, this.width, this.height);
 	
 	this.died = function(){
 		this.WaveCannon = false;
@@ -75,14 +75,14 @@ function player(){
 		try {
 			if(!this.exploding){
 				ctx.drawImage(this.image, this.loc.x, this.loc.y, this.width, this.height);
-				if(this.Invincible){
+				if(this.invincible){
                     ctx.font = '10px Arial';
-					ctx.fillStyle = 'rgba(142,214,255,' + this.InvincibleTime * 0.013 + ')';
-                    ctx.fillText(75 - this.InvincibleTime, this.loc.getX1() - 5, this.loc.y + 10);
-					this.InvincibleTime += 1;
-					if(this.InvincibleTime >= 75){
-						this.InvincibleTime = 0;
-						this.Invincible = false;
+					ctx.fillStyle = 'rgba(142,214,255,' + this.invincibleTime * 0.013 + ')';
+                    ctx.fillText(75 - this.invincibleTime, this.loc.getX1() - 5, this.loc.y + 10);
+					this.invincibleTime += 1;
+					if(this.invincibleTime >= 75){
+						this.invincibleTime = 0;
+						this.invincible = false;
 					}
 				}						
 				else
@@ -92,17 +92,17 @@ function player(){
                     this.drawShields();
 			}
 			else{
-				this.ExplodeDistance += 0.5;
+				this.explodeDistance += 0.5;
 				ctx.beginPath();
-				ctx.moveTo(drawX, this.loc.y);
-				ctx.arc(drawX, this.loc.y, this.ExplodeDistance, 2 * Math.PI, false);
-				if(this.ExplodeDistance % 2 == 0)
+				ctx.moveTo(this.loc.x, this.loc.y);
+				ctx.arc(this.loc.x, this.loc.y, this.explodeDistance, 2 * Math.PI, false);
+				if(this.explodeDistance % 2 == 0)
 					ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 				else
 					ctx.fillStyle = 'rgba(255, 255, 0, 1)';
 				ctx.fill();
-				if (this.ExplodeDistance >= 40){
-					this.ExplodeDistance = 0;
+				if (this.explodeDistance >= 40){
+					this.explodeDistance = 0;
 					this.exploding = false;
 					this.loc.x = 250;
 					this.loc.y = 634;
