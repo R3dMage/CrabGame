@@ -6,26 +6,29 @@ var SwooperState = {
 function swooper(x, y, health, weight){
   this.loc = new position(x, y, 40, 15);
   this.size = 18;
-  this.Health = health;
-  this.Weight = weight;
-  this.State = SwooperState.SWOOP;
+  this.health = health;
+  this.weight = weight;
+  this.state = SwooperState.SWOOP;
   this.moveRight = true;
   this.Color = '8844FF'
-  X = (Math.random() * 10) + 80;
-  this.PosX = this.loc.X + X;
-  this.NegX = this.loc.X - X;
-  this.OrigY = this.loc.Y;
-  this.OrigX = this.loc.X;
-  this.Swoop = 0;
-  this.SwoopMax = Math.random() * 10;
-  this.PowerUp = false;
+  let X = (Math.random() * 10) + 80;
+  this.posX = this.loc.x + X;
+  this.negX = this.loc.x - X;
+  this.origY = this.loc.y;
+  this.origX = this.loc.x;
+  this.swoop = 0;
+  this.swoopMax = Math.random() * 10;
+  this.powerUp = false;
   if (Math.random() * 100 < 10)
-	this.PowerUp = true;
+	this.powerUp = true;
 
   this.draw = function(ctx){
-    var drawX = this.loc.X + 25;
-    var drawY = this.loc.Y;
-    this.Color = WeightChart(this.Health);
+	if (this.isDead())
+		return;
+
+	var drawX = this.loc.x + 25;
+	var drawY = this.loc.y;
+	this.color = WeightChart(this.Health);
 
 	ctx.beginPath();
 	ctx.moveTo(drawX - 25, drawY);
@@ -33,62 +36,67 @@ function swooper(x, y, health, weight){
 	ctx.lineTo(drawX + 25, drawY);
 	ctx.lineTo(drawX - 25, drawY);
 	ctx.closePath();
-	ctx.fillStyle = this.Color;
+	ctx.fillStyle = this.color;
 	ctx.fill();
   }
   
   this.fire = function(){
 	X = Math.random() * 1000;
-	if ( X > 1000 - this.Weight * 10)
+	if ( X > 1000 - this.weight * 10)
 		return true;
 	else
 		return false;
   }
   
-  this.move = function(){	
-	switch(this.State){
+  this.move = function(){
+	if (this.isDead())
+		return;
+
+	switch(this.state){
 	case SwooperState.SWOOP:
 		if (this.moveRight){
-			if (this.loc.getX1() < this.PosX &&
+			if (this.loc.getX1() < this.posX &&
 				this.loc.getX1() < 500)
-				this.loc.X += 5;
+				this.loc.x += 5;
 			else{
 				this.moveRight = false;
-				this.Swoop += 1;
+				this.swoop += 1;
 			}				
 		}
 		else{
-			if (this.loc.X > this.NegX &&
-				this.loc.X > 10)
-				this.loc.X -= 5;
+			if (this.loc.x > this.negX &&
+				this.loc.x > 10)
+				this.loc.x -= 5;
 			else{
 				this.moveRight = true;
-				this.Swoop += 1;
+				this.swoop += 1;
 			}
 		}
-		if(this.Swoop >= this.SwoopMax &&
-			this.loc.X > this.OrigX - 10 &&
-			this.loc.X < this.OrigX + 10){
-			this.Swoop = 0;
-			this.State = SwooperState.RUSH;
+		if(this.swoop >= this.swoopMax &&
+			this.loc.x > this.origX - 10 &&
+			this.loc.x < this.origX + 10){
+			this.swoop = 0;
+			this.state = SwooperState.RUSH;
 		}
 		break;
 	case SwooperState.RUSH:
-		this.loc.Y += 15;
-		if (this.loc.Y > this.OrigY + 300){
-			this.OrigY += 100;
-			this.State = SwooperState.RETREAT;}
+		this.loc.y += 15;
+		if (this.loc.y > this.origY + 300){
+			this.origY += 100;
+			if (this.loc.y > 600)
+				this.origY = 50;
+			this.state = SwooperState.RETREAT;}
 		break;
 	case SwooperState.RETREAT:
-		this.loc.Y -= 5;
-		if (this.loc.Y <= this.OrigY)
-			this.State = SwooperState.SWOOP;
+		this.loc.y -= 5;
+		if (this.loc.y <= this.origY)
+			this.state = SwooperState.SWOOP;
 		break;
 	}
   }
 
   this.isDead = function(){
-	return (this.Health <= 0);
+	return (this.health <= 0);
   }
 
   this.canShoot = function(){

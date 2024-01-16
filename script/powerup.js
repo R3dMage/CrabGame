@@ -43,13 +43,13 @@ function powerup(x, y){
 		OldStyle = ctx.fillStyle;
 		ctx.fillStyle = this.Color;
 		ctx.beginPath();
-		ctx.arc(this.loc.X,this.loc.Y,10,2*Math.PI,false);
+		ctx.arc(this.loc.x,this.loc.y,10,2*Math.PI,false);
 		ctx.closePath();
 		ctx.fill();
 		ctx.fillStyle = OldStyle;
 	}
 	
 	this.move = function(){
-		this.loc.Y += 4;
+		this.loc.y += 4;
 	}
 }

@@ -42,8 +42,8 @@ function game(){
 
 	this.playerShoot = function(){
 		if(!this.player.Exploding){
-			this.missiles.push(new missile(this.player.loc.X - 18, this.player.loc.Y, this.player.WeaponWeight, 0, this.player.WaveCannon));
-			this.missiles.push(new missile(this.player.loc.X + 18, this.player.loc.Y, this.player.WeaponWeight, 0, this.player.WaveCannon));
+			this.missiles.push(new missile(this.player.loc.x - 18, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
+			this.missiles.push(new missile(this.player.loc.x + 18, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
 		}
 	}
 
@@ -79,7 +79,7 @@ function game(){
 			}
 			this.PowerUps.splice(idx,1);
 		}
-		if( P.loc.Y > 720 )
+		if( P.loc.y > 720 )
 			this.PowerUps.splice(idx,1);
 	}
 	
@@ -180,7 +180,7 @@ function game(){
 					// The enemy player hit has died. Get Points!
 						this.score += this.enemies[j].weight * 100;
 						this.explosions.push(new kaboom(this.enemies[j].loc.x + this.enemies[j].loc.width / 2, this.enemies[j].loc.y, 15));
-						if (this.levelTracker.levelNumber > 1 && Math.random() > 0.9){
+						if (this.level > 1 && Math.random() > 0.9){
 							this.powerups.push(new powerup(this.enemies[j].loc.x, this.enemies[j].loc.y));
 						}
 						this.kills += 1;
