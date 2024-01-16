@@ -4,6 +4,7 @@ function player(){
 	this.Image = document.getElementById('CrabGuns');
 	this.Width = 100;
 	this.Height = 100;
+	this.speed = 8;
     
 // Weaponry
 	this.WaveCannon = false;
@@ -44,6 +45,22 @@ function player(){
 			this.loc.Y = y;
 		}
 	}
+
+	this.moveLeft = function(){
+		this.setPosition(this.loc.X - this.speed, this.loc.Y);
+	}
+
+	this.moveRight = function(){
+		this.setPosition(this.loc.X + this.speed, this.loc.Y);
+	}
+
+	this.moveUp = function(){
+		this.setPosition(this.loc.X, this.loc.Y - this.speed);
+	}
+
+	this.moveDown = function(){
+		this.setPosition(this.loc.X, this.loc.Y + this.speed);
+	}
     
     this.getMissileType = function(){
         if(this.WaveCannon)
@@ -55,7 +72,7 @@ function player(){
         return 'SINGLE';
     }
 	
-	this.draw = function(){
+	this.draw = function(ctx){
         var drawX = this.loc.X - this.Width /2;
         var drawY = this.loc.Y - this.Height / 2;
 		try {
@@ -134,7 +151,7 @@ function missile(x, y, weight, direction, isWave){
   
   this.Color = WeightChart(this.Weight);
   
-  this.draw = function(){
+  this.draw = function(ctx){
 	if(this.Wave){
 		ctx.beginPath();
 		ctx.arc(this.loc.X,this.loc.Y,20, 0, Math.PI, true);
@@ -159,7 +176,7 @@ function missile(x, y, weight, direction, isWave){
 	}
   }
   
-  this.EndDuration = function(){
+  this.endDuration = function(){
 	switch(this.Direction){
 	case 0:
 		if(this.loc.Y < this.Duration)

@@ -22,11 +22,11 @@ function swooper(x, y, health, weight){
   if (Math.random() * 100 < 10)
 	this.PowerUp = true;
 
-  this.draw = function(){
+  this.draw = function(ctx){
     var drawX = this.loc.X + 25;
     var drawY = this.loc.Y;
     this.Color = WeightChart(this.Health);
-	    
+
 	ctx.beginPath();
 	ctx.moveTo(drawX - 25, drawY);
 	ctx.lineTo(drawX, drawY + 10);
@@ -85,5 +85,13 @@ function swooper(x, y, health, weight){
 			this.State = SwooperState.SWOOP;
 		break;
 	}
+  }
+
+  this.isDead = function(){
+	return (this.Health <= 0);
+  }
+
+  this.canShoot = function(){
+	return false;
   }
 }
