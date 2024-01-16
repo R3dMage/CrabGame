@@ -94,8 +94,8 @@ function player(){
 			else{
 				this.explodeDistance += 0.5;
 				ctx.beginPath();
-				ctx.moveTo(this.loc.x, this.loc.y);
-				ctx.arc(this.loc.x, this.loc.y, this.explodeDistance, 2 * Math.PI, false);
+				ctx.moveTo(this.loc.x + this.loc.width / 2, this.loc.y + this.loc.height / 2);
+				ctx.arc(this.loc.x + this.loc.width / 2, this.loc.y + this.loc.height / 2, this.explodeDistance, 2 * Math.PI, false);
 				if(this.explodeDistance % 2 == 0)
 					ctx.fillStyle = 'rgba(255, 255, 255, 1)';
 				else
