@@ -1,9 +1,8 @@
 function player(){
 // Drawing
-    this.Wingspan = 8;
 	this.image = document.getElementById('CrabGuns');
-	this.width = 100;
-	this.height = 100;
+	this.width = 48;
+	this.height = 40;
 	this.speed = 8;
     
 // Weaponry
@@ -18,7 +17,7 @@ function player(){
 	this.Splosion = new boom(this.x, this.y);
 	this.InvincibleTime = 0;
 	this.Invincible = false;
-	this.Exploding = false;
+	this.exploding = false;
 	this.ExplodeDistance = 0;
 	this.loc = new position(212.5, 634, 16, 20);
 	
@@ -30,16 +29,16 @@ function player(){
 	}
 	
 	this.setPosition = function(x, y){
-		if(!this.Exploding){
+		if(!this.exploding){
             if(x < 0)
                 x = 0;
-            else if( x > 500 - (this.wingspan * 2))
-                x = 500 - (this.wingspan * 2);
+            else if( x > 500 - (this.width))
+                x = 500 - (this.width);
             
             if(y < 0)
                 y = 0;
-            if(y > 720 - this.height)
-                y = 720 - this.height;
+            if(y > 750 - this.height)
+                y = 750 - this.height;
                 
 			this.loc.x = x;
 			this.loc.y = y;
@@ -73,11 +72,9 @@ function player(){
     }
 	
 	this.draw = function(ctx){
-        var drawX = this.loc.x - this.width /2;
-        var drawY = this.loc.y - this.height / 2;
 		try {
-			if(!this.Exploding){
-				ctx.drawImage(this.image, drawX, drawY, 100, 100);
+			if(!this.exploding){
+				ctx.drawImage(this.image, this.loc.x, this.loc.y, this.width, this.height);
 				if(this.Invincible){
                     ctx.font = '10px Arial';
 					ctx.fillStyle = 'rgba(142,214,255,' + this.InvincibleTime * 0.013 + ')';
@@ -106,7 +103,7 @@ function player(){
 				ctx.fill();
 				if (this.ExplodeDistance >= 40){
 					this.ExplodeDistance = 0;
-					this.Exploding = false;
+					this.exploding = false;
 					this.loc.x = 250;
 					this.loc.y = 634;
 				}

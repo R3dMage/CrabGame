@@ -42,8 +42,8 @@ function game(){
 
 	this.playerShoot = function(){
 		if(!this.player.Exploding){
-			this.missiles.push(new missile(this.player.loc.x - 18, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
-			this.missiles.push(new missile(this.player.loc.x + 18, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
+			this.missiles.push(new missile(this.player.loc.x + 6, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
+			this.missiles.push(new missile(this.player.loc.x + 42, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
 		}
 	}
 
