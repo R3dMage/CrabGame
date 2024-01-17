@@ -85,7 +85,7 @@ function player(){
 						this.invincible = false;
 					}
 				}
-				
+
                 if( this.Shields > 0 )
                     this.drawShields();
 			}
@@ -124,6 +124,17 @@ function player(){
         ctx.closePath();
         ctx.stroke();
     }
+
+	this.processPowerUp = function(letter){
+		switch(letter){
+			case 'P':
+				this.WeaponWeight += 1;
+				break;
+			case 'A':
+				this.Shields += 1;
+				break;
+		}
+	}
 }
   
 function missile(x, y, weight, direction, isWave){
