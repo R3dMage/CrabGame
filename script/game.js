@@ -356,9 +356,9 @@ function pad(num) {
 }
 
 KeyboardController({37: function() {theGame.player.moveLeft();},
-										38: function() {theGame.player.moveUp();},
-										39: function() {theGame.player.moveRight();},
-										40: function() {theGame.player.moveDown();}},20);
+					38: function() {theGame.player.moveUp();},
+					39: function() {theGame.player.moveRight();},
+					40: function() {theGame.player.moveDown();}},20);
 
 var theGame = new game();
 

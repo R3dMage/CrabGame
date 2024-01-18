@@ -1,5 +1,3 @@
-
-
 function levelFactory(){
 
 	this.create = function(levelNumber){

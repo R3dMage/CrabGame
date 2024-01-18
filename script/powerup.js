@@ -17,12 +17,12 @@ function powerup(x, y){
 	case 4:
 		this.letter = 'A';
 		break;
-    case 5:
-        this.letter = 'A';
-        break;
-    case 6:
-        this.letter = 'A';
-        break;
+	case 5:
+		this.letter = 'A';
+		break;
+	case 6:
+		this.letter = 'A';
+		break;
 	}
 	
 	this.draw = function(ctx){
@@ -36,9 +36,9 @@ function powerup(x, y){
 		case 'A':
 			this.Color = '#99FF99';
 			break;
-        case 'W':
-            this.Color = '#555500';
-            break;
+		case 'W':
+			this.Color = '#555500';
+			break;
 		}
 		OldStyle = ctx.fillStyle;
 		ctx.fillStyle = this.Color;
