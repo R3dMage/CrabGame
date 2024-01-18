@@ -40,6 +40,23 @@ function game(){
 		}
 	}
 
+	this.preGame = function(){
+		this.clear(this.ctx);
+		this.ctx.fillStyle = "White";
+		this.ctx.font = "40px Arial";
+		this.ctx.textAlign = 'center';
+		this.ctx.fillText("Crab Guns!", 500/2, 200);
+		
+		this.ctx.font = '10px Arial';
+		this.ctx.fillText('Press SPACE to play',250, 500);
+
+		this.background.move(1);
+		this.background.draw(this.ctx);
+		this.drawStatus(this.ctx);
+
+		// xplode.draw();
+	}
+
 	this.startGame = function(){
 		this.enemies.splice(0, this.enemies.length);
 		this.missiles.splice(0, this.enemies.length);
@@ -49,6 +66,19 @@ function game(){
 		this.lives = 5;
 		this.player = new player();
 		this.gameState = 'Run';
+	}
+	
+	this.playGame = function(){
+		this.levelTracker.update(this.frameNumber, this.enemies)
+
+		// Handle dead player
+		if( this.lives <= 0 && !this.player.Exploding ){
+			this.gameState = 'GameOver';
+		}
+
+		this.moveObjects();
+		this.update();
+		this.drawObjects();
 	}
 	
 	this.handlePowerUps = function(P,idx,array){
@@ -118,18 +148,6 @@ function game(){
 
 		ctx.fillStyle = WeightChart(this.player.weaponWeight);
 		ctx.fillRect( 550, 110, 40, 10 );
-	}
-	
-	this.playGame = function(){
-			this.levelTracker.update(this.frameNumber, this.enemies)
-			this.moveObjects();
-			this.update();
-			this.drawObjects();
-
-	 // Handle dead player
-			if( this.lives <= 0 && !this.player.Exploding ){
-				this.gameState = 'GameOver';
-			}
 	}
 
 	this.moveObjects = function(){
@@ -297,23 +315,6 @@ function game(){
 
 		this.player.draw(this.ctx);
 		this.drawStatus(this.ctx);
-	}
-
-	this.preGame = function(){
-		this.clear(this.ctx);
-		this.ctx.fillStyle = "White";
-		this.ctx.font = "40px Arial";
-		this.ctx.textAlign = 'center';
-		this.ctx.fillText("Crab Guns!", 500/2, 200);
-		
-		this.ctx.font = '10px Arial';
-		this.ctx.fillText('Press SPACE to play',250, 500);
-
-		this.background.move(1);
-		this.background.draw(this.ctx);
-		this.drawStatus(this.ctx);
-
-		// xplode.draw();
 	}
 
 	this.gameOver = function(){
