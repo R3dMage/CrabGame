@@ -81,31 +81,6 @@ function game(){
 		this.drawObjects();
 	}
 	
-	this.handlePowerUps = function(P,idx,array){
-		P.move();
-		P.draw(this.ctx);
-		
-		if( P.loc.CollidedWith( Player.loc) ){
-			switch(P.Letter){
-			case 'P':
-				this.player.weaponWeight += 1;
-				break;
-			case 'D':
-				this.player.dualCannon = true;
-				break;
-			case 'A':
-				this.player.shields += 1;
-				break;
-			case 'W':
-				this.player.waveCannon = true;
-				break;
-			}
-			this.PowerUps.splice(idx,1);
-		}
-		if( P.loc.y > 720 )
-			this.PowerUps.splice(idx,1);
-	}
-	
 	this.drawStatus = function(ctx){
 		ctx.fillStyle = '#EEEEEE';
 		ctx.fillRect(this.width, 0, this.width + 100, this.height);
