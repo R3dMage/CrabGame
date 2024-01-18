@@ -35,8 +35,8 @@ function game(){
 
 	this.playerShoot = function(){
 		if(!this.player.Exploding){
-			this.missiles.push(new missile(this.player.loc.x + 6, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
-			this.missiles.push(new missile(this.player.loc.x + 42, this.player.loc.y, this.player.WeaponWeight, 0, this.player.WaveCannon));
+			this.missiles.push(new missile(this.player.loc.x + 6, this.player.loc.y, this.player.weaponWeight, 0, this.player.waveCannon));
+			this.missiles.push(new missile(this.player.loc.x + 42, this.player.loc.y, this.player.weaponWeight, 0, this.player.waveCannon));
 		}
 	}
 
@@ -58,16 +58,16 @@ function game(){
 		if( P.loc.CollidedWith( Player.loc) ){
 			switch(P.Letter){
 			case 'P':
-				this.player.WeaponWeight += 1;
+				this.player.weaponWeight += 1;
 				break;
 			case 'D':
-				this.player.DualCannon = true;
+				this.player.dualCannon = true;
 				break;
 			case 'A':
-				this.player.Shields += 1;
+				this.player.shields += 1;
 				break;
 			case 'W':
-				this.player.WaveCannon = true;
+				this.player.waveCannon = true;
 				break;
 			}
 			this.PowerUps.splice(idx,1);
@@ -108,15 +108,15 @@ function game(){
 		ctx.fillText( 'Gun:', 505, 120 );
 		ctx.fillText( 'Shield:', 505, 140 );
 		
-		if( this.player.Shields == 0 )
+		if( this.player.shields == 0 )
 			ctx.fillText( 'NONE', 550, 140 );
 		else
 		{
-			ctx.fillStyle = WeightChart(this.player.Shields);
+			ctx.fillStyle = WeightChart(this.player.shields);
 			ctx.fillRect( 550, 130, 40, 10 );
 		}
 
-		ctx.fillStyle = WeightChart(this.player.WeaponWeight);
+		ctx.fillStyle = WeightChart(this.player.weaponWeight);
 		ctx.fillRect( 550, 110, 40, 10 );
 	}
 	
