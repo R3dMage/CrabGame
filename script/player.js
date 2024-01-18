@@ -27,6 +27,10 @@ function player(){
 		this.weaponWeight = 1;
 		this.shields = 0;
 	}
+
+	this.canShoot = function(){
+		return (!this.exploding);
+	}
 	
 	this.setPosition = function(x, y){
 		if(!this.exploding){
@@ -135,64 +139,61 @@ function player(){
 				break;
 		}
 	}
+
+	this.getProjectiles = function(){
+		let projectiles = [];
+		let shotSpeed = 10;
+		let target = new position(this.loc.x, -10, 0, 0);
+
+		target = new position(this.loc.x + 6, -10, 0, 0);
+		projectiles.push(new missile(this.loc.x + 6, this.loc.y, target, shotSpeed, this.weaponWeight, this.waveCannon));
+		target = new position(this.loc.x + 42, -10, 0, 0);
+		projectiles.push(new missile(this.loc.x + 42, this.loc.y, target, shotSpeed, this.weaponWeight, this.waveCannon));
+		
+		return projectiles;
+	}
 }
 
-function missile(x, y, weight, direction, isWave){
+function missile(x, y, target, speed, weight, isWave){
 	if(isWave)
 		this.loc = new position(x, y, 40, 10);
 	else
 		this.loc = new position(x, y, 3, 9);
+	this.target = target;
 	this.weight = weight;
-	this.direction = direction;
-	this.Wave = isWave;
-
-	switch(this.direction){
-	case 0:
-		this.Duration = y - 400;
-		break;
-	case 1:
-		this.Duration = y + 400;
-		break;
-	}
+	this.speed = speed;
+	this.direction = Math.atan2(target.y - this.loc.y, target.x - this.loc.x);
+	this.wave = isWave;
 
 	this.Color = WeightChart(this.weight);
 
 	this.draw = function(ctx){
-		if(this.Wave){
+		ctx.fillStyle = this.Color;
+		ctx.save();
+		ctx.translate(this.loc.x, this.loc.y);
+		ctx.rotate(this.direction + Math.PI / 2);
+
+		if(this.wave){
 			ctx.beginPath();
-			ctx.arc(this.loc.x,this.loc.y,20, 0, Math.PI, true);
-			ctx.closePath();
-			ctx.fillStyle = this.Color;
+			ctx.arc(this.loc.width / 2, this.loc.height / 2, this.loc.width / 2, 0, Math.PI, true);
 			ctx.fill();
 		}
 		else{
-			ctx.fillStyle = this.Color;
-			ctx.fillRect(this.loc.x, this.loc.y,this.loc.width, this.loc.height);
+			ctx.fillRect(this.loc.width / -2, this.loc.height / -2, this.loc.width, this.loc.height);
 		}
+		
+		ctx.restore();
 	}
 
-	this.move = function(){
-		switch(this.direction){
-		case 0:
-			this.loc.y -= 10;
-			break;
-		case 1:
-			this.loc.y += 10;
-			break;
-		}
+	this.move = function(){		
+		this.loc.x += Math.cos(this.direction) * this.speed;
+		this.loc.y += Math.sin(this.direction) * this.speed;
 	}
 
 	this.endDuration = function(){
-		switch(this.direction){
-		case 0:
-			if(this.loc.y < this.Duration)
-				return true;
-			break;
-		case 1:
-			if(this.loc.y > this.Duration)
-				return true;
-			break;
-		}
+		if(this.loc.y < -5 || this.loc.y > 720 || this.loc.x < -5 || this.loc.x > 500)
+			return true;
+
 		return false;
 	}
 }
